@@ -1,0 +1,60 @@
+name: Deploy Fitness Assistant
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+env:
+  AWS_REGION: ${{ vars.AWS_REGION }}
+  DEPLOY_BUCKET: ${{ vars.FITNESS_ASSISTANT_S3_BUCKET }}
+  DISTRIBUTION_ID: ${{ vars.FITNESS_ASSISTANT_CLOUDFRONT_ID }}
+
+jobs:
+  build-and-deploy:
+    name: Build and deploy static site
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write   # required for AWS OIDC
+      contents: read
+
+    defaults:
+      run:
+        working-directory: fitness-assistant
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: fitness-assistant/package-lock.json
+
+      - name: Install dependencies
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      - name: Build static assets
+        run: npm run build
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.FITNESS_ASSISTANT_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Sync to S3
+        run: |
+          aws s3 sync dist s3://$DEPLOY_BUCKET --delete
+
+      - name: Create CloudFront invalidation
+        if: env.DISTRIBUTION_ID != ''
+        run: |
+          aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths "/*"
