@@ -1,0 +1,28 @@
+[project]
+name = "lenskeep"
+version = "0.1.0"
+requires-python = ">=3.13"
+description = "A VSCO web scraper and archive manager"
+dependencies = [
+  "requests",
+  "beautifulsoup4",
+  "apscheduler",
+  "playwright",
+]
+
+[project.scripts]
+lenskeep-scrape = "scraper.scrape_vsco:main"
+
+[dependency-groups]
+dev = ["pytest", "pytest-mock", "ruff", "mypy"]
+
+[tool.setuptools]
+# we are using the current folder as package root (package is a namespace with 'scraper' as a package)
+packages = ["scraper", "scheduler"]  # add others if you want them importable
+
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.uv]
+package = true

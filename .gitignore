@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 # Node
 node_modules/
 dist/
@@ -15,3 +16,9 @@ pnpm-debug.log*
 # Python cache
 __pycache__/
 *.pyc
+=======
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+>>>>>>> Stashed changes

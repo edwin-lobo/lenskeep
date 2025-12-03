@@ -1,0 +1,20 @@
+{
+  "name": "lenskeep-dev",
+  "context": "..",
+  "dockerFile": "Dockerfile",
+  "remoteUser": "vscode",
+  "runArgs": ["--security-opt=label=disable"],
+  "workspaceFolder": "/workspace",
+
+  "mounts": [
+    "source=${localWorkspaceFolder}/,target=/workspace,type=bind,consistency=cached",
+    "source=lenskeep_archive,target=/workspace/archive,type=volume"
+  ],
+
+  "containerEnv": {
+    "LENSKEEP_ARCHIVE_DIR": "/workspace/archive",
+    "WORKSPACE": "/workspace"
+  },
+
+  "postCreateCommand": "bash -lc 'set -euo pipefail; rm -rf .venv; if [ -f uv.lock ] && grep -qi \"placeholder lockfile\" uv.lock; then rm uv.lock; fi; uv lock; uv sync --group dev; uv run python -m playwright install chromium'"
+}
