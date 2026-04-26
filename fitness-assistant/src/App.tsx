@@ -4,6 +4,7 @@ import FeatureGrid, { type Feature } from './components/FeatureGrid';
 import Footer from './components/Footer';
 import GoalTracker, { type Goal } from './components/GoalTracker';
 import Header from './components/Header';
+import NutritionPlanner from './components/NutritionPlanner';
 import PlanSection, { type PlanItem } from './components/PlanSection';
 
 const features: Feature[] = [
@@ -70,7 +71,7 @@ const weeklyPlan: PlanItem[] = [
 const goals: Goal[] = [
   { label: 'Training consistency', progress: 82, target: '5 sessions/week' },
   { label: 'Sleep score', progress: 74, target: '7.5 hrs avg' },
-  { label: 'Vo2 max trend', progress: 68, target: '46 ml/kg/min' },
+  { label: 'Protein target adherence', progress: 71, target: '≥ 1.8 g/kg' },
   { label: 'Mobility habit', progress: 60, target: '10 mins daily' },
 ];
 
@@ -90,6 +91,7 @@ const App: React.FC = () => {
           summary="Pick your goal, adjust the slider for session length, and the assistant generates a balanced week you can run as-is or tweak on the fly."
           items={weeklyPlan}
         />
+        <NutritionPlanner />
         <GoalTracker goals={goals} />
         <CTASection onPrimaryClick={handleCta} />
       </main>
