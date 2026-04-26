@@ -31,6 +31,21 @@ The static assets will be emitted to `dist/` and can be hosted on Amazon S3 or f
 
 ### GitHub Actions + AWS OIDC deployment
 
+
+### GitHub Pages deployment
+
+This repository also includes `.github/workflows/deploy-pages.yml` to publish the static app to GitHub Pages on every push to `main`.
+
+1. In GitHub, go to **Settings → Pages** and set **Source** to **GitHub Actions**.
+2. Push to `main` (or run the workflow manually from **Actions**).
+3. The workflow builds with `VITE_BASE_PATH=/<repo-name>/` so routing/assets work at `https://<owner>.github.io/<repo-name>/`.
+
+Optional custom domain:
+
+- Set repository variable `PAGES_CNAME` to your domain (for example `ridgetocoast.com`).
+- The workflow writes `dist/CNAME` automatically when `PAGES_CNAME` is set.
+- In DNS, point your domain to GitHub Pages using the records from GitHub Pages settings.
+
 - The repository includes `.github/workflows/deploy.yml`, which builds the Vite app and syncs `dist/` into S3.
 - Set repository/environment **variables**:
   - `AWS_REGION` – target AWS region.

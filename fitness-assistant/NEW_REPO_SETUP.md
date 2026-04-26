@@ -4,7 +4,7 @@ The app currently lives in a multi-project repository. Use these steps to lift i
 
 ## 1) Create the repository
 
-- Decide on the new repository name (e.g., `fitness-assistant-mvp`). If you want to use the existing public repo, set `NEW_REPO=fitness-assistant` and `OWNER=edwin-lobo` in the commands below.
+- Use the existing public repository name directly: set `NEW_REPO=fitness-assistant` and `OWNER=edwin-lobo` in the commands below.
 - Create the repo in GitHub with **no** template files so the history from this project can be pushed intact (the `edwin-lobo/fitness-assistant` repository is already prepared this way).
 - Optionally scope repository rulesets or environments for `main` if you want branch protection or reviewers.
 
@@ -15,7 +15,7 @@ From the project root:
 ```bash
 # Keep history but filter the fitness-assistant folder into its own branch
 OWNER=${OWNER:-<OWNER>}
-NEW_REPO=${NEW_REPO:-fitness-assistant-mvp}
+NEW_REPO=${NEW_REPO:-fitness-assistant}
 
 git switch --create export-fitness-assistant
 # Ensure the working tree is clean
